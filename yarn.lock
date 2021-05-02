@@ -2080,7 +2080,7 @@ pkg-dir@^5.0.0:
 
 "pkg-fetch@github:tufan-io/pkg-fetch":
   version "3.0.4"
-  resolved "https://codeload.github.com/tufan-io/pkg-fetch/tar.gz/04e5efcfb1f8c542d27a91325587b0786117ae9a"
+  resolved "https://codeload.github.com/tufan-io/pkg-fetch/tar.gz/3192666560f1210a68851fd7a89b83ccecb464b9"
   dependencies:
     axios "^0.21.1"
     chalk "^4.1.0"

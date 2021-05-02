@@ -7,8 +7,15 @@
 (function installDiagnostic() {
   const fs = require('fs');
   const path = require('path');
+  // we need a pristine copy of fs to write
+  // the vfs to disk when DEBUG_PKG=vfs
+  const ffs = require('fs');
 
   const win32 = process.platform === 'win32';
+
+  const { DEBUG_PKG } = process.env;
+  const vfs = path.join(process.cwd(), '.tmp', '__DEBUB_VFS__');
+  console.log({ DEBUG_PKG, vfs });
 
   if (process.env.DEBUG_PKG === '2') {
     console.log(Object.entries(DICT));
@@ -53,10 +60,10 @@
           // reproduce the snapshot file system on disk.
           // specifically, to check that sources are not being exposed.
           let fname = args1.filter((x) => typeof x === 'string')[0];
-          fname = fname.replace(/.*snapshot/, 'vfs');
-          console.log(fname);
-          fs.mkdirSync(path.dirname(fname), { recursive: true });
-          fs.writeFileSync(fname, result, 'utf8');
+          fname = fname.replace(/.*snapshot/, vfs);
+          console.log(`vfs: ${fname}`);
+          ffs.mkdirSync(path.dirname(fname), { recursive: true });
+          ffs.writeFileSync(fname, result, 'utf8');
         }
       } else if (process.env.DEBUG_PKG) {
         console.log(
