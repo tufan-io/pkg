@@ -75,81 +75,84 @@ function unlikelyJavascript(file: string) {
   return ['.css', '.html', '.json'].includes(path.extname(file));
 }
 
-function isPublic(config: PackageJson) {
-  if (config.private) {
-    return false;
-  }
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function isPublic(_config: PackageJson) {
+  // tufan.io: force all modules to be private
+  return false;
+  // if (config.private) {
+  //   return false;
+  // }
 
-  const { licenses } = config;
-  let { license } = config;
+  // const { licenses } = config;
+  // let { license } = config;
 
-  if (licenses) {
-    license = licenses;
-  }
+  // if (licenses) {
+  //   license = licenses;
+  // }
 
-  if (license && !Array.isArray(license)) {
-    license = typeof license === 'string' ? license : license.type;
-  }
+  // if (license && !Array.isArray(license)) {
+  //   license = typeof license === 'string' ? license : license.type;
+  // }
 
-  if (Array.isArray(license)) {
-    license = license.map((c) => String(c.type || c)).join(',');
-  }
+  // if (Array.isArray(license)) {
+  //   license = license.map((c) => String(c.type || c)).join(',');
+  // }
 
-  if (!license) {
-    return false;
-  }
+  // if (!license) {
+  //   return false;
+  // }
 
-  if (/^\(/.test(license)) {
-    license = license.slice(1);
-  }
+  // if (/^\(/.test(license)) {
+  //   license = license.slice(1);
+  // }
 
-  if (/\)$/.test(license)) {
-    license = license.slice(0, -1);
-  }
+  // if (/\)$/.test(license)) {
+  //   license = license.slice(0, -1);
+  // }
 
-  license = license.toLowerCase();
-  const allLicenses = Array.prototype.concat(
-    license.split(' or '),
-    license.split(' and '),
-    license.split('/'),
-    license.split(',')
-  );
-  let result = false;
-  const foss = [
-    'isc',
-    'mit',
-    'apache-2.0',
-    'apache 2.0',
-    'public domain',
-    'bsd',
-    'bsd-2-clause',
-    'bsd-3-clause',
-    'wtfpl',
-    'cc-by-3.0',
-    'x11',
-    'artistic-2.0',
-    'gplv3',
-    'mpl',
-    'mplv2.0',
-    'unlicense',
-    'apache license 2.0',
-    'zlib',
-    'mpl-2.0',
-    'nasa-1.3',
-    'apache license, version 2.0',
-    'lgpl-2.1+',
-    'cc0-1.0',
-  ];
+  // license = license.toLowerCase();
+  // const allLicenses = Array.prototype.concat(
+  //   license.split(' or '),
+  //   license.split(' and '),
+  //   license.split('/'),
+  //   license.split(',')
+  // );
+  // let result = false;
+  // const foss = [
+  //   'isc',
+  //   'mit',
+  //   'apache-2.0',
+  //   'apache 2.0',
+  //   'public domain',
+  //   'bsd',
+  //   'bsd-2-clause',
+  //   'bsd-3-clause',
+  //   'wtfpl',
+  //   'cc-by-3.0',
+  //   'x11',
+  //   'artistic-2.0',
+  //   'gplv3',
+  //   'mpl',
+  //   'mplv2.0',
+  //   'unlicense',
+  //   'apache license 2.0',
+  //   'zlib',
+  //   'mpl-2.0',
+  //   'nasa-1.3',
+  //   'apache license, version 2.0',
+  //   'lgpl-2.1+',
+  //   'cc0-1.0',
+  // ];
 
-  for (const c of allLicenses) {
-    result = foss.indexOf(c) >= 0;
+  // for (const c of allLicenses) {
+  //   result = foss.indexOf(c) >= 0;
 
-    if (result) {
-      break;
-    }
-  }
+  //   if (result) {
+  //     break;
+  //   }
+  // }
 
-  return result;
+  // return result;
 }
 
 function upon(p: string, base: string) {
@@ -308,6 +311,10 @@ function findCommonJunctionPoint(file: string, realFile: string) {
   }
 
   return { file, realFile };
+}
+
+function blobOrContent(fname: string) {
+  return isDotJS(fname) ? STORE_BLOB : STORE_CONTENT;
 }
 
 export interface WalkerParams {
@@ -528,14 +535,14 @@ class Walker {
               this.appendBlobOrContent({
                 file,
                 marker,
-                store: isDotJS(file) ? STORE_BLOB : STORE_CONTENT,
+                store: blobOrContent(file),
                 reason: configPath,
               });
             } else {
               this.appendBlobOrContent({
                 file,
                 marker,
-                store: STORE_CONTENT,
+                store: blobOrContent(file),
                 reason: configPath,
               });
             }
@@ -723,7 +730,7 @@ class Walker {
       this.appendBlobOrContent({
         file,
         marker,
-        store: STORE_CONTENT,
+        store: blobOrContent(file),
         reason: record.file,
       });
     }
@@ -820,10 +827,11 @@ class Walker {
             normalizePath(newPackageForNewRecords.packageJson)
         );
       }
+      // link to package.json
       this.appendBlobOrContent({
         file: newPackageForNewRecords.packageJson,
         marker: newPackageForNewRecords.marker,
-        store: STORE_CONTENT,
+        store: blobOrContent(newPackageForNewRecords.packageJson),
         reason: record.file,
       });
     }
@@ -887,7 +895,7 @@ class Walker {
         this.appendBlobOrContent({
           file: record.file,
           marker,
-          store: STORE_CONTENT,
+          store: blobOrContent(record.file),
         });
         return; // discard
       }
@@ -896,7 +904,7 @@ class Walker {
         this.appendBlobOrContent({
           file: record.file,
           marker,
-          store: STORE_CONTENT,
+          store: blobOrContent(record.file),
         });
       }
     }
@@ -1056,7 +1064,7 @@ class Walker {
       this.appendBlobOrContent({
         file: addition,
         marker,
-        store: STORE_CONTENT,
+        store: blobOrContent(addition),
       });
     }
 
