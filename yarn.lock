@@ -245,10 +245,10 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
-"@tufan-io/tufan-pkg-fetch@1.0.0":
-  version "1.0.0"
-  resolved "https://npm.pkg.github.com/download/@tufan-io/tufan-pkg-fetch/1.0.0/be49f33dea685c0077c6e4375949fb0525110ef7962e495cd4f69293ccb6aed7#7d0ee5de89340294e3b9f18ce7a0399ff6fc92df"
-  integrity sha512-EmPfmDZckm2VvTyN2VLtPx6qElz5I/XwcoKVJmsWRnBVkZt++ZPHhYndjy7ndhumQlkmNEbTWWUbLwMJrXxYPg==
+"@tufan-io/tufan-pkg-fetch@3.0.4":
+  version "3.0.4"
+  resolved "https://npm.pkg.github.com/download/@tufan-io/tufan-pkg-fetch/3.0.4/43584bacd1cfd76492fd7ee2e7ea57f2a08f667628fbab260f616559996ee35f#bf653afa1f68b2207e864319633c3124a925a371"
+  integrity sha512-CQSHTG+tt7Rv2jbjIesA27QToRhu3ytfWpDJUl5jikxZOXKbRe/y2hrQdUbOSIZy1YkcdQKRQv4p8K36k/RkgA==
   dependencies:
     pkg-dir "^5.0.0"
     pkg-fetch "github:tufan-io/pkg-fetch"
